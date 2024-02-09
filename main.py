@@ -15,13 +15,16 @@ def text_to_speech(text):
 def weather_api_process(city):
     url = f'http://api.weatherapi.com/v1/current.json?key=d6c0d2026c90422e93e110353240801&q={city}&aqi=no'
     
-    r = requests.get(url)
-    weather_dict_response = json.loads(r.text)
-    temperature = weather_dict_response["current"]["temp_c"]
+    response = requests.get(url)
+    if response.status_code == 200:
+        weather_dict_response = json.loads(response.text)
+        temperature = weather_dict_response["current"]["temp_c"]
 
-    text_to_speech(f"The current weather in {city} is {temperature} degrees. ")
+        text_to_speech(f"The current weather in {city} is {temperature} degrees. ")
 
-    return temperature
+        return temperature
+    else: 
+        return None
 
 if __name__ == '__main__':
     welcomeMsg = '''Welcome to RoboSpeaker 1.1 by Vinay
